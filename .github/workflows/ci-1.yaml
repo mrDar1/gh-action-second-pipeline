@@ -58,7 +58,7 @@ jobs:
           echo "Deployment completed"
 
 
-  print_var:
+  print_env_var:
     needs: deploy
     runs-on: ubuntu-latest
     steps:
