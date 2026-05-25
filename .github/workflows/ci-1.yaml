@@ -6,6 +6,7 @@ on:
       - main
   pull_request:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
   lint_and_test:
@@ -44,3 +45,26 @@ jobs:
         run: npm ci
       - name: build
         run: npm run build
+
+
+  deploy:
+    needs: build_job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy
+        run: |
+          echo "Deploying application..."
+          sleep 3
+          echo "Deployment completed"
+
+
+  print_var:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print variables
+        run: |
+          echo "Repository name: ${{ github.repository }}"
+          echo "Branch name: ${{ github.ref_name }}"
+          echo "Workflow name: ${{ github.workflow }}"
+          echo "Actor username: ${{ github.actor }}"
