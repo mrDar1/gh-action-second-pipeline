@@ -4,15 +4,28 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches: [main]
 
 jobs:
-  test:
+  lint_and_test:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      CI: true
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
 
       - name: Install dependencies
-        run: npm install
-
+        run: npm ci
+      - name: Run linter
+        run: npm run lint
       - name: Run tests
         run: npm test
+
+      # - name: build
+      #   run: npm run build
